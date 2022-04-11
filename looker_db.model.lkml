@@ -1,6 +1,9 @@
 connection: "dv-looker-poc"
 
-include: "/views/*.view.lkml"                # include all views in the views/ folder in this project
+include: "/views/*.view.lkml"
+include: "/singledate.dashboard.lookml"
+
+# include all views in the views/ folder in this project
 
 explore: sales_report {}
 
@@ -23,3 +26,5 @@ explore: sales_test {
 explore: email {}
 
 explore: random_data {}
+
+explore: sample {}
