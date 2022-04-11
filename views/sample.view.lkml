@@ -91,6 +91,7 @@ view: sample {
   measure: total_profit {
     type: sum
     sql: ${profit} ;;
+    value_format:"[>=1000]0,\"K\";[<=1000]0,\"K\";0.00"
   }
 
   measure: average_profit {
@@ -110,6 +111,7 @@ view: sample {
 
   dimension: row_id {
     type: number
+    primary_key: yes
     sql: ${TABLE}.Row_ID ;;
   }
 
@@ -155,6 +157,14 @@ view: sample {
 
   measure: count {
     type: count
+    label: "Count of Orders"
     drill_fields: [customer_name, product_name]
+    value_format:"[>=1000]0,\"K\";0"
+  }
+
+  measure: sales_sum {
+    type: sum
+    value_format:"[>=1000]0,\"K\";0"
+    sql: ${sales};;
   }
 }
