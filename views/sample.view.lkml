@@ -164,7 +164,7 @@ view: sample {
 
   measure: sales_sum {
     type: sum
-    value_format:"[>=1000]0,\"K\";0"
+    value_format:"$0.00"
     sql: ${sales};;
   }
 }
