@@ -28,6 +28,7 @@ view: email {
   measure: count {
     type: count
     tags: ["Default Measure", "First Tag Practice"]
+    description:"this is default measure of view"
     drill_fields: [id]
   }
 }
