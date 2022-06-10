@@ -19,6 +19,23 @@ view: sample {
   dimension: city {
     type: string
     sql: ${TABLE}.City ;;
+    action: {
+
+      label: "Want to delete the Row ID?"
+      url: "https://us-central1-mlconsole-poc.cloudfunctions.net/update"
+
+      form_param: {
+        name: "City"
+
+        type: string
+
+        label: "Deleting the Row ID"
+
+        default: "{{ value }}"
+
+        description: "Enter the correct postcode"
+      }
+    }
   }
 
   dimension: country_region {
@@ -46,14 +63,6 @@ view: sample {
 
   dimension_group: order {
     type: time
-    timeframes: [
-      raw,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
     convert_tz: no
     datatype: date
     sql: ${TABLE}.Order_Date ;;
@@ -112,14 +121,62 @@ view: sample {
   dimension: row_id {
     type: number
     primary_key: yes
-    sql: ${TABLE}.Row_ID ;;
+    sql: ${TABLE}.Row_ID;;
+    action: {
+
+      label: "Want to delete the Row ID?"
+      url: "https://us-central1-mlconsole-poc.cloudfunctions.net/delete"
+
+      form_param: {
+        name: "CodeDelete"
+
+        type: string
+
+        label: "Deleting the Row ID"
+
+        default: "{{ value }}"
+
+        description: "Enter the correct postcode"
+      }
+    }
   }
 
+  dimension: concat_row_id {
+    type: string
+    sql: CONCAT(${row_id},",") ;;
+  }
   dimension: sales {
     type: number
     sql: ${TABLE}.Sales ;;
   }
 
+  dimension: Quarter  {
+    type: string
+    sql: CONCAT("Q",EXTRACT(QUARTER FROM CURRENT_DATE()));;
+  }
+  dimension: test {
+    type: yesno
+    sql: (${Quarter} = ${order_quarter_of_year}
+         OR CAST(${test_current_date} AS STRING) = 'Yes') AND ${order_year} = 2019 ;;
+  }
+  parameter: QTD {
+    type: unquoted
+    allowed_value: {
+      label: "QTD Testing"
+      value : "QTD"
+    }
+  }
+  dimension: check {
+    sql: {% if QTD._parameter_value == 'QTD' %}
+          ${order_date}
+          {% else %}
+          ${order_date}
+           {% endif %};;
+  }
+  dimension: test_current_date {
+    type: yesno
+    sql: ${order_date} < (SELECT CURRENT_DATE()) ;;
+  }
   dimension: segment {
     type: string
     sql: ${TABLE}.Segment ;;
@@ -154,7 +211,10 @@ view: sample {
     type: string
     sql: ${TABLE}.Sub_Category ;;
   }
-
+   dimension_group: record_created_at {
+     type: time
+     sql: CURRENT_TIMESTAMP() ;;
+   }
   measure: count {
     type: count
     label: "Count of Orders"
@@ -164,7 +224,7 @@ view: sample {
 
   measure: sales_sum {
     type: sum
-    value_format:"$0.00"
+    value_format: "0"
     sql: ${sales};;
   }
 }
