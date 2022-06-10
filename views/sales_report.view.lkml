@@ -14,13 +14,64 @@ view: sales_report {
   dimension: name {
     type: string
     sql: ${TABLE}.name ;;
+    link:
+    {
+      label: "name"
+    url: "https://mediaagility.looker.com/dashboards/292?Name={{value}}"
+    }
   }
 
-  dimension: name_1 {
+  dimension: lookerapi {
     type: string
-    sql: concat("Name:",${TABLE}.name) ;;
-   # html: <font size="10">{{ value }}</font>
-    html: <font size = "3"> {{value}} </font> ;;
+    sql: 1 ;;
+    html: <div style="border-bottom: solid 1px #27a9e1;">
+        <nav style="font-size: 18px; padding: 5px 10px 0 10px; height: 60px">
+        <a style="color: #ffffff; padding: 5px 15px; border-top: solid 1px #27a9e1 border-left: solid 1px #27a9e1; border-right: solid 1px #27a9e1; border-radius: 5px 5px 0 0; float: left; line-height: 40px; font-weight: bold; background-color: #27a9e1;" href="#home">lookerapi</a>
+        <a style="color: #27a9e1; padding: 5px 15px; border-bottom: solid 1px #27a9e1; float: left; line-height: 40px;" href="/dashboards/287?Name={{ _filters['sales_report.name'] | url_encode }}">lookerapi</a>
+            </nav>
+                </div> ;;
+    }
+
+  dimension: lookerapi1 {
+    type: string
+    sql: 1 ;;
+    html: <div style="border-bottom: solid 1px #27a9e1;">
+        <nav style="font-size: 18px; padding: 5px 10px 0 10px; height: 60px">
+  <a style="color: #ffffff; padding: 5px 15px; border-top: solid 1px #27a9e1 border-left: solid 1px #27a9e1; border-right: solid 1px #27a9e1; border-radius: 5px 5px 0 0; float: left; line-height: 40px; font-weight: bold; background-color: #27a9e1;" href="#home">lookerapi1</a>
+  <a style="color: #27a9e1; padding: 5px 15px; border-bottom: solid 1px #27a9e1; float: left; line-height: 40px;" href="/dashboards/293?Name={{ _filters['sales_report.name'] | url_encode }}">lookerapi1</a>
+            </nav>
+                </div> ;;
+    }
+
+  dimension: lkr1 {
+    type: string
+    sql: 1 ;;
+    html: <div style="border-bottom: solid 1px #27a9e1;">
+        <nav style="font-size: 18px; padding: 5px 10px 0 10px; height: 60px">
+  <a style="color: #ffffff; padding: 5px 15px; border-top: solid 1px #27a9e1 border-left: solid 1px #27a9e1; border-right: solid 1px #27a9e1; border-radius: 5px 5px 0 0; float: left; line-height: 40px; font-weight: bold; background-color: #27a9e1;"  href="/dashboards/293?Name={{ _filters['sales_report.name'] | url_encode }}">lkr1</a>
+  <a style="color: #27a9e1; padding: 5px 15px; border-bottom: solid 1px #27a9e1; float: left; line-height: 40px;" href="/dashboards/295?Name={{ _filters['sales_report.name'] | url_encode }}">lkr2</a>
+            </nav>
+                </div> ;;
+  }
+
+  dimension: lkr2 {
+    type: string
+    sql: 1 ;;
+    html: <div style="border-bottom: solid 1px #27a9e1;">
+        <nav style="font-size: 18px; padding: 5px 10px 0 10px; height: 60px">
+  <a style="color: #ffffff; padding: 5px 15px; border-top: solid 1px #27a9e1 border-left: solid 1px #27a9e1; border-right: solid 1px #27a9e1; border-radius: 5px 5px 0 0; float: left; line-height: 40px; font-weight: bold; background-color: #27a9e1;"  href="/dashboards/293?Name={{ _filters['sales_report.name'] | url_encode }}">lkr2</a>
+  <a style="color: #27a9e1; padding: 5px 15px; border-bottom: solid 1px #27a9e1; float: left; line-height: 40px;" href="/dashboards/294?Name={{ _filters['sales_report.name'] | url_encode }}">lkr1</a>
+            </nav>
+                </div> ;;
+  }
+
+
+
+
+
+  dimension: name2 {
+    type: string
+    sql: ${TABLE}.name ;;
   }
 
   dimension: product_sku {
