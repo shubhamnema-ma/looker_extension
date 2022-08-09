@@ -9,45 +9,16 @@ view: mobile_tablet {
 
   # Here's what a typical dimension looks like in LookML.
   # A dimension is a groupable field that can be used to filter query results.
-  # This dimension will be called "Active Session" in Explore.
+  # This dimension will be called "Campaign" in Explore.
 
-  dimension: active_session {
-    type: number
-    sql: ${TABLE}.active_session ;;
-  }
-
-  # A measure is a field that uses a SQL aggregate function. Here are defined sum and average
-  # measures for this dimension, but you can also add measures of many different aggregates.
-  # Click on the type parameter to see all the options in the Quick Help panel on the right.
-
-  measure: total_active_session {
-    type: sum
-    sql: ${active_session} ;;
-  }
-
-  measure: average_active_session {
-    type: average
-    sql: ${active_session} ;;
-  }
-
-  dimension: age_group {
+  dimension: campaign {
     type: string
-    sql: ${TABLE}.age_group ;;
+    sql: ${TABLE}.campaign ;;
   }
 
-  dimension: avg_time_on_page {
+  dimension: clicks {
     type: number
-    sql: ${TABLE}.avg_time_on_page ;;
-  }
-
-  dimension: bounce_rate {
-    type: number
-    sql: ${TABLE}.bounce_rate ;;
-  }
-
-  dimension: category {
-    type: string
-    sql: ${TABLE}.category ;;
+    sql: ${TABLE}.Clicks ;;
   }
 
   dimension: country {
@@ -61,29 +32,43 @@ view: mobile_tablet {
     sql: ${TABLE}.device ;;
   }
 
-  dimension: download_detail {
+  dimension: impressions {
+    type: number
+    sql: ${TABLE}.impressions ;;
+  }
+ dimension: Detail {
+   type: string
+   sql:  ;;
+ }
+  dimension: Country_Wise_Details {
     type: string
-    sql: ${TABLE}.download_detail ;;
+    sql: CONCAT(${country},'  ','Detail') ;;
+    html:<p style="color: blue; font-size: 100%"><u>{{ value }}</u></p>;;
   }
 
-  dimension: engagements {
-    type: number
-    sql: ${TABLE}.engagements ;;
-  }
-
-  dimension: form_completion {
-    type: number
-    sql: ${TABLE}.form_completion ;;
-  }
-
-  dimension: gender {
+  measure: country_details {
     type: string
-    sql: ${TABLE}.gender ;;
+    sql: ${Country_Wise_Details} ;;
+    required_fields: [Country_Wise_Details]
+    html:
+    {% if country._value == 'UK' %}
+        <a style="font-weight: bold;color: blue" href = "https://mediaagility.looker.com/dashboards/392"><u>UK Details<u/></a>
+
+    {% elsif country._value == 'USA' %}
+           <a style="font-weight: bold;color: blue" href = "https://mediaagility.looker.com/dashboards/390"><u>USA Details<u/></a>
+    {% else %}
+          <a style="font-weight: bold;color: blue"><u>Canada Details<u/></a>
+    {% endif %};;
   }
 
-  dimension: goal_1_initiate_rx_define {
-    type: number
-    sql: ${TABLE}.goal_1_initiate_rx_define ;;
+  measure: total_impressions {
+    type: sum
+    sql: ${impressions} ;;
+  }
+
+  measure: average_impressions {
+    type: average
+    sql: ${impressions} ;;
   }
 
   # Dates and timestamps can be represented in Looker using a dimension group of type: time.
@@ -103,54 +88,39 @@ view: mobile_tablet {
     sql: ${TABLE}.insert_ts ;;
   }
 
-  dimension: landing_page {
-    type: string
-    sql: ${TABLE}.landing_page ;;
-  }
-
-  dimension: medium {
-    type: string
-    sql: ${TABLE}.medium ;;
-  }
-
   dimension: os {
     type: string
     sql: ${TABLE}.os ;;
   }
 
-  dimension: page_scroll_by {
-    type: string
-    sql: ${TABLE}.page_scroll_by ;;
-  }
-
-  dimension: page_title {
-    type: string
-    sql: ${TABLE}.page_title ;;
-  }
-
-  dimension: page_views {
+  dimension: pages {
     type: number
-    sql: ${TABLE}.page_views ;;
+    sql: ${TABLE}.pages ;;
   }
 
-  dimension: session_id {
+  dimension: persona {
     type: string
-    sql: ${TABLE}.session_id ;;
+    sql: ${TABLE}.persona ;;
   }
 
-  dimension: sessions_per_visitors {
+  dimension: search_keyword {
+    type: string
+    sql: ${TABLE}.search_keyword ;;
+  }
+
+  dimension: sessions {
     type: number
-    sql: ${TABLE}.sessions_per_visitors ;;
+    sql: ${TABLE}.sessions ;;
   }
 
-  dimension: site_interaction_by {
+  dimension: social_platform {
     type: string
-    sql: ${TABLE}.site_interaction_by ;;
+    sql: ${TABLE}.social_platform ;;
   }
 
-  dimension: social_network {
-    type: string
-    sql: ${TABLE}.social_network ;;
+  dimension: spend {
+    type: number
+    sql: ${TABLE}.spend ;;
   }
 
   dimension_group: timestamp {
@@ -167,46 +137,21 @@ view: mobile_tablet {
     sql: ${TABLE}.timestamp ;;
   }
 
-  dimension_group: ts {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}.ts ;;
-  }
-
-  dimension: unique_users {
+  dimension: total_eligible_impressions {
     type: number
-    sql: ${TABLE}.unique_users ;;
+    sql: ${TABLE}.total_eligible_impressions ;;
   }
 
-  dimension: website {
-    type: string
-    sql: ${TABLE}.website ;;
+  dimension: total_entrancevisits {
+    type: number
+    sql: ${TABLE}.total_entrancevisits ;;
   }
-  dimension: detail {
-    type: string
-    sql: CONCAT(${country},":",${download_detail},":",${engagements},":",${os}) ;;
+
+  dimension: total_onepage_visits {
+    type: number
+    sql: ${TABLE}.total_onepage_visits ;;
   }
-  measure: drill {
-    type: string
-    sql: "Drill" ;;
-    drill_fields: [session_id,timestamp_date,device,detail]
-    link: {
-      label: "Show as Detailed result" #or your label of choice
-      url: "
-      {% assign vis_config = '{
-      \"show_view_names\":false,\"show_row_numbers\":true,\"transpose\":false,\"truncate_text\":true,\"hide_totals\":false,\"hide_row_totals\":false,\"size_to_fit\":true,\"table_theme\":\"white\",\"limit_displayed_rows\":false,\"enable_conditional_formatting\":false,\"header_text_alignment\":\"left\",\"header_font_size\":12,\"rows_font_size\":12,\"conditional_formatting_include_totals\":false,\"conditional_formatting_include_nulls\":false,\"type\":\"looker_grid\",\"defaults_version\":1,\"series_types\":{},\"hidden_fields\":[\"mobile_tablet.drill\"]
-      }' %}
-      {{ link }}&vis_config={{ vis_config | encode_uri }}&toggle=dat,pik,vis&limit=5000"
-    }
-  }
+
   measure: count {
     type: count
     drill_fields: []
