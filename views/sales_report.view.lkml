@@ -77,6 +77,29 @@ view: sales_report {
   dimension: product_sku {
     type: string
     sql: ${TABLE}.productSKU ;;
+    action: {
+      label: "Approve"
+      url: "https://us-central1-mlconsole-poc.cloudfunctions.net/l-action-2"
+      param: {
+        name: "product_sku"
+        value: "{{value}}"
+      }
+      form_param: {
+        name: "approved"
+        type: select
+        label: "Approve/Reject:"
+        default: "true"
+        description: "Please select Approve or Reject"
+        option: {
+          name: "true"
+          label: "Approve"
+        }
+        option: {
+          name: "false"
+          label: "Reject"
+        }
+      }
+    }
   }
 
   dimension: ratio {
@@ -121,6 +144,29 @@ view: sales_report {
   dimension: total_ordered {
     type: number
     sql: ${TABLE}.total_ordered ;;
+    action: {
+      label: "Approve"
+      url: "https://us-central1-mlconsole-poc.cloudfunctions.net/l-action-1"
+      param: {
+        name: "order_id"
+        value: "{{value}}"
+      }
+      form_param: {
+        name: "approved"
+        type: select
+        label: "Approve/Reject:"
+        default: "true"
+        description: "Please select Approve or Reject"
+        option: {
+          name: "true"
+          label: "Approve"
+        }
+        option: {
+          name: "false"
+          label: "Reject"
+        }
+      }
+    }
   }
 
   measure: count {
